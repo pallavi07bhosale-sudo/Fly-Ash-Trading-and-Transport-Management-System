@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Order Details</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='order.css') }}">
+
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        <div class="logo-circle">FA</div>
+        <span>Fly Ash Transport System</span>
+    </div>
+
+    <a href="{{ url_for('dashboard') }}" class="dashboard-btn">
+        Dashboard
+    </a>
+
+</header>
+
+<main>
+
+    <div class="page-title">
+        <h1>Order Details</h1>
+        <p>Manage customer orders and fly ash delivery information.</p>
+    </div>
+
+    <!-- ORDER DETAILS -->
+
+    <div class="order-card">
+
+        <h2>Order Details</h2>
+
+        <form id="orderform"
+              action="{{ url_for('order') }}"
+              method="POST">
+
+            <div class="form-group">
+                <label>Order ID</label>
+                <input type="text"
+                       name="order_id"
+                       placeholder="Enter order ID"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label>Customer / Industry Name</label>
+                <input type="text"
+                       name="customer_industry_name"
+                       placeholder="Enter customer or industry name"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label>Fly Ash Quantity (Ton)</label>
+                <input type="number"
+                       name="fly_ash_quantity"
+                       placeholder="Enter quantity in ton"
+                       min="0.01"
+                       step="0.01"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label>Order Date</label>
+                <input type="date"
+                       name="order_date"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label>Delivery Location</label>
+                <input type="text"
+                       id="deliveryLocation"
+                       name="delivery_location"
+                       placeholder="Select location on map"
+                       required
+                       readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Vehicle Required</label>
+
+                <select name="vehicle_required" required>
+                    <option value="">Select</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Order Status</label>
+
+                <select name="order_status" required>
+                    <option value="">Select Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="In Process">In Process</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Loading Status</label>
+
+                <select name="loading_status" required>
+                    <option value="">Select Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Loading">Loading</option>
+                    <option value="Loaded">Loaded</option>
+                </select>
+            </div>
+
+            <div class="form-group full-width">
+                <label>Select Delivery Location on Map</label>
+
+                <div id="orderMap"
+                     style="height:350px; width:100%; border-radius:6px;">
+                </div>
+
+               
+            </div>
+
+            <div class="form-group full-width">
+                <label>Order / Requirement Details</label>
+
+                <textarea name="order_requirement_details"
+                          placeholder="Enter order or customer requirement details"></textarea>
+            </div>
+
+            <button type="submit">
+                Save Order
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- SAVED ORDER DETAILS -->
+
+    <div class="saved-card">
+
+        <h2>Saved Order Details</h2>
+
+        <p class="saved-text">
+            Orders saved in the system will appear here.
+        </p>
+
+        <div id="order-list">
+                {% if orders %}
+                    {% for o in orders %}
+                        <div class="order-data">
+
+                            <h3>Order ID: {{ o[0] }}</h3>
+
+                            <p><strong>Customer / Industry:</strong> {{ o[1] }}</p>
+                            <p><strong>Fly Ash Quantity:</strong> {{ o[2] }} Ton</p>
+                            <p><strong>Order Date:</strong> {{ o[3] }}</p>
+                            <p><strong>Delivery Location:</strong> {{ o[4] }}</p>
+                            <p><strong>Vehicle Required:</strong> {{ o[5] }}</p>
+                            <p><strong>Order Status:</strong> {{ o[6] }}</p>
+                            <p><strong>Loading Status:</strong> {{ o[7] }}</p>
+
+                            <p>
+                                <strong>Order Details:</strong>
+                                {{ o[8] or "No additional details" }}
+                            </p>
+
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-message">
+                        No order details available yet.
+                    </div>
+                {% endif %}
+
+        </div>
+
+    </div>
+
+</main>
+
+<footer>
+    <p>
+        © 2026 Fly Ash Trading &amp; Transport Management System
+    </p>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script src="{{ url_for('static', filename='order.js') }}"></script>
+
+</body>
+</html>

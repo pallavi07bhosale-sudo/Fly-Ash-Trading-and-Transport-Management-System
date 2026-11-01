@@ -1,0 +1,192 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Transport Management</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='vehicle.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <div class="logo-circle">FA</div>
+        <span>Fly Ash Transport System</span>
+    </div>
+
+    <a href="{{ url_for('dashboard') }}" class="dashboard-btn">
+        Dashboard
+    </a>
+</header>
+
+<main>
+
+    <div class="page-title">
+        <h1>Transport Management</h1>
+        <p>Manage vehicle, driver and delivery information.</p>
+    </div>
+
+    <!-- TRANSPORT DETAILS -->
+    <div class="transport-card">
+        <h2>Vehicle Details</h2>
+
+        <form id="transportForm" action="{{ url_for('vehicle') }}" method="POST">
+
+            <div class="form-group">
+                <label>Vehicle Number</label>
+                <input type="text" name="vehicle_number"
+                       placeholder="e.g. MH 15 AB 1234" required>
+            </div>
+
+            <div class="form-group">
+                <label>Vehicle Type</label>
+                <select name="vehicle_type" required>
+                    <option value="">Select Vehicle Type</option>
+                    <option>Truck</option>
+                    <option>Trailer</option>
+                    <option>Tanker</option>
+                    <option>Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Driver Name</label>
+                <input type="text" name="driver_name"
+                       placeholder="Enter driver name" required>
+            </div>
+
+            <div class="form-group">
+                <label>Driver Contact</label>
+                <input type="tel" name="driver_contact"
+                       placeholder="Enter driver contact"
+                       pattern="[0-9]{10}" maxlength="10" required>
+            </div>
+
+            <div class="form-group">
+                <label>Order ID</label>
+                <input type="text" name="order_id"
+                       placeholder="Enter order ID" required>
+            </div>
+
+            <div class="form-group">
+                <label>Current Location</label>
+                <input type="text" id="currentLocation" name="current_location"
+                       placeholder="Select current vehicle location from map"
+                       required readonly>
+
+                <button type="button" id="openMapBtn">
+                    📍 Select Location on Map
+                </button>
+
+                <p id="selectedCoordinates"></p>
+
+                <div id="vehicleMap"
+                     style="height:350px;width:100%;margin-top:12px;display:none;">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Vehicle Status</label>
+                <select name="vehicle_status" required>
+                    <option value="">Select Status</option>
+                    <option>Available</option>
+                    <option>Assigned</option>
+                    <option>At Plant</option>
+                    <option>Loading</option>
+                    <option>In Transit</option>
+                    <option>Delivered</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Loading Status</label>
+                <select name="loading_status" required>
+                    <option value="">Select Status</option>
+                    <option>Pending</option>
+                    <option>Loading</option>
+                    <option>Loaded</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Delivery Status</label>
+                <select name="delivery_status" required>
+                    <option value="">Select Status</option>
+                    <option>Pending</option>
+                    <option>In Transit</option>
+                    <option>Delivered</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Gate Pass</label>
+                <select name="gate_pass" required>
+                    <option value="">Select Status</option>
+                    <option>Pending</option>
+                    <option>Generated</option>
+                </select>
+            </div>
+
+            <div class="form-group full-width">
+                <label>Transport Details</label>
+                <textarea name="transport_details"
+                          placeholder="Enter additional transport details"></textarea>
+            </div>
+
+            <button type="submit">Save Transport Details</button>
+
+        </form>
+    </div>
+
+    <!-- SAVED TRANSPORT DETAILS -->
+    <div class="saved-card">
+        <h2>Saved Transport Details</h2>
+
+        <p class="saved-text">
+            Vehicle and transport details saved in the system
+            will appear here.
+        </p>
+
+        <div id="transport-list">
+
+            {% if transports %}
+                {% for t in transports %}
+                    <div class="saved-transport">
+                        <h3>{{ t[1] }}</h3>
+                        <p><strong>Vehicle Type:</strong> {{ t[2] }}</p>
+                        <p><strong>Driver Name:</strong> {{ t[3] }}</p>
+                        <p><strong>Driver Contact:</strong> {{ t[4] }}</p>
+                        <p><strong>Order ID:</strong> {{ t[5] }}</p>
+                        <p><strong>Current Location:</strong> {{ t[6] }}</p>
+                        <p><strong>Vehicle Status:</strong> {{ t[7] }}</p>
+                        <p><strong>Loading Status:</strong> {{ t[8] }}</p>
+                        <p><strong>Delivery Status:</strong> {{ t[9] }}</p>
+                        <p><strong>Gate Pass:</strong> {{ t[10] }}</p>
+                        <p><strong>Transport Details:</strong> {{ t[11] or 'N/A' }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-message">
+                    No transport details available yet.
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+</main>
+
+<footer>
+    <p>© 2026 Fly Ash Trading &amp; Transport Management System</p>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{{ url_for('static', filename='vehicle.js') }}"></script>
+
+</body>
+</html>

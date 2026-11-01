@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports | Fly Ash Trading & Transport</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='report.css') }}">
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-circle">FA</div>
+            <div class="logo-text">
+                <h2>FLY ASH</h2>
+                <span>TRADING &amp; TRANSPORT</span>
+            </div>
+        </div>
+
+        <nav>
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('plant') }}">Plant</a>
+            <a href="{{ url_for('customer') }}">Customer</a>
+            <a href="{{ url_for('order') }}">Orders</a>
+            <a href="{{ url_for('vehicle') }}">Vehicles</a>
+            <a href="{{ url_for('payment') }}">Payments</a>
+            <a href="{{ url_for('report') }}" class="active">Reports</a>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+
+        <section class="page-heading">
+            <div>
+                <h1>Reports &amp; Records</h1>
+                <p>View saved records from your Fly Ash Trading &amp; Transport Management System.</p>
+            </div>
+
+            <button class="btn btn-gold" onclick="window.print()">
+                Print Report
+            </button>
+        </section>
+
+        <!-- SUMMARY CARDS -->
+        <section class="summary-grid">
+            <div class="summary-card">
+                <div class="card-icon">🏭</div>
+                <h3>Plant Records</h3>
+                <p class="count">
+                    {{ report_sections | selectattr('name', 'equalto', 'Plant Details') | map(attribute='count') | first | default(0) }}
+                </p>
+            </div>
+
+            <div class="summary-card">
+                <div class="card-icon">👥</div>
+                <h3>Customer Records</h3>
+                <p class="count">
+                    {{ report_sections | selectattr('name', 'equalto', 'Customer Details') | map(attribute='count') | first | default(0) }}
+                </p>
+            </div>
+
+            <div class="summary-card">
+                <div class="card-icon">📦</div>
+                <h3>Order Records</h3>
+                <p class="count">
+                    {{ report_sections | selectattr('name', 'equalto', 'Orders') | map(attribute='count') | first | default(0) }}
+                </p>
+            </div>
+
+            <div class="summary-card">
+                <div class="card-icon">🚚</div>
+                <h3>Vehicle Records</h3>
+                <p class="count">
+                    {{ report_sections | selectattr('name', 'equalto', 'Vehicles') | map(attribute='count') | first | default(0) }}
+                </p>
+            </div>
+
+            <div class="summary-card">
+                <div class="card-icon">💳</div>
+                <h3>Payment Records</h3>
+                <p class="count">
+                    {{ report_sections | selectattr('name', 'equalto', 'Payments') | map(attribute='count') | first | default(0) }}
+                </p>
+            </div>
+
+            <div class="summary-card">
+                <div class="card-icon">✉️</div>
+                <h3>Contact Enquiries</h3>
+                <p class="count">
+                    {{ report_sections | selectattr('name', 'equalto', 'Contact Enquiries') | map(attribute='count') | first | default(0) }}
+                </p>
+            </div>
+        </section>
+
+        <!-- SEARCH -->
+        <section class="search-section">
+            <input
+                type="text"
+                id="reportSearch"
+                placeholder="Search records by column name or value..."
+                onkeyup="searchReports()"
+            >
+            <a href="{{ url_for('report') }}" class="btn btn-outline">Refresh Data</a>
+        </section>
+
+        <!-- DATABASE REPORT SECTIONS -->
+        <section class="reports-list">
+
+            {% if report_sections %}
+                {% for section in report_sections %}
+                    <div class="report-card">
+                        <div class="report-card-header">
+                            <div>
+                                <h2>{{ section.name }}</h2>
+                                <p>Saved records: {{ section.count }}</p>
+                            </div>
+                            <span class="record-badge">{{ section.count }} Records</span>
+                        </div>
+
+                        {% if section.rows %}
+                            <div class="table-wrapper">
+                                <table class="report-table">
+                                    <thead>
+                                        <tr>
+                                            {% for column in section.columns %}
+                                                <th>{{ column }}</th>
+                                            {% endfor %}
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for row in section.rows %}
+                                            <tr>
+                                                {% for value in row %}
+                                                    <td>{{ value if value is not none else '-' }}</td>
+                                                {% endfor %}
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="empty-state">
+                                <span>📋</span>
+                                <h3>No Records Found</h3>
+                                <p>There are no saved records in this section yet.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state main-empty">
+                    <span>📊</span>
+                    <h2>No Report Data Available</h2>
+                    <p>Please check the database tables and report route in your Flask application.</p>
+                </div>
+            {% endif %}
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>© 2026 Fly Ash Trading &amp; Transport Management System</p>
+    </footer>
+
+    <!-- SEARCH SCRIPT -->
+    <script>
+        function searchReports() {
+            const input = document.getElementById("reportSearch");
+            const filter = input.value.toLowerCase();
+            const cards = document.querySelectorAll(".report-card");
+
+            cards.forEach(function(card) {
+                const text = card.innerText.toLowerCase();
+                card.style.display = text.includes(filter) ? "" : "none";
+            });
+        }
+    </script>
+
+</body>
+</html>

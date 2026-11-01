@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Details | Fly Ash Trading & Transport</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='plant.css') }}">
+
+    <!-- Leaflet Map CSS -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <div class="logo-circle">FA</div>
+            <div>
+                <h2>FLY ASH</h2>
+                <p>TRADING & TRANSPORT</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <h1>Plant Details</h1>
+      
+<br><br>
+        <!-- Plant Form -->
+        <form id="plantForm"
+              action="{{ url_for('plant') }}"
+              method="POST">
+
+            <div class="form-group">
+                <label for="plant_name">Plant Name</label>
+                <input
+                    type="text"
+                    id="plant_name"
+                    name="plant_name"
+                    placeholder="Enter plant name"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="plantLocation">Plant Location</label>
+
+                <input
+                    type="text"
+                    id="plantLocation"
+                    name="plant_location"
+                    placeholder="Select location from map"
+                    required
+                    readonly
+                >
+
+                <button type="button" id="openMapBtn">
+                    📍 Select Location on Map
+                </button>
+
+                <p id="selectedCoordinates"></p>
+
+                <div
+                    id="plantMap"
+                    style="height: 350px; width: 100%; margin-top: 12px; display: none;"
+                ></div>
+            </div>
+
+            <div class="form-group">
+                <label for="fly_ash_requirement">Fly Ash Requirement (Tonnes)</label>
+                <input
+                    type="number"
+                    id="fly_ash_requirement"
+                    name="fly_ash_requirement"
+                    min="0.01"
+                    step="0.01"
+                    placeholder="Enter requirement"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="order_date">Order Date</label>
+                <input
+                    type="date"
+                    id="order_date"
+                    name="order_date"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="vehicle_required">Vehicle Required</label>
+                <select id="vehicle_required" name="vehicle_required" required>
+                    <option value="">Select</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="loading_status">Loading Status</label>
+                <select id="loading_status" name="loading_status" required>
+                    <option value="">Select Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="gate_pass">Gate Pass</label>
+                <input
+                    type="text"
+                    id="gate_pass"
+                    name="gate_pass"
+                    placeholder="Enter gate pass"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="mseb_gate_entry">MSEB Gate Entry</label>
+                <input
+                    type="text"
+                    id="mseb_gate_entry"
+                    name="mseb_gate_entry"
+                    placeholder="Enter MSEB gate entry"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="additional_details">Additional Details</label>
+                <textarea
+                    id="additional_details"
+                    name="additional_details"
+                    placeholder="Enter additional details"
+                ></textarea>
+            </div>
+
+            <button type="submit">Save Plant Details</button>
+
+        </form>
+
+        <!-- Saved Plant Records -->
+        <section class="saved-plants">
+            <h2>Saved Plant Details</h2>
+
+            {% if plants %}
+                {% for p in plants %}
+                    <div class="plant-card">
+                        <h3>{{ p[1] }}</h3>
+                        <p><strong>Plant ID:</strong> {{ p[0] }}</p>
+                        <p><strong>Location:</strong> {{ p[2] }}</p>
+                        <p><strong>Fly Ash Requirement:</strong> {{ p[3] }} tonnes</p>
+                        <p><strong>Order Date:</strong> {{ p[4] }}</p>
+                        <p><strong>Vehicle Required:</strong> {{ p[5] }}</p>
+                        <p><strong>Loading Status:</strong> {{ p[6] }}</p>
+                        <p><strong>Gate Pass:</strong> {{ p[7] }}</p>
+                        <p><strong>MSEB Gate Entry:</strong> {{ p[8] }}</p>
+                        <p><strong>Additional Details:</strong> {{ p[9] or 'N/A' }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No plant records saved yet.</p>
+            {% endif %}
+        </section>
+
+    </main>
+
+    <!-- Leaflet Map JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const mapBox = document.getElementById("plantMap");
+        const openBtn = document.getElementById("openMapBtn");
+        const locationInput = document.getElementById("plantLocation");
+        const coordinates = document.getElementById("selectedCoordinates");
+
+        let map;
+        let marker;
+
+        openBtn.addEventListener("click", function () {
+
+            mapBox.style.display = "block";
+
+            if (!map) {
+
+                // Map opens around Nashik; pan to another area if needed
+                map = L.map("plantMap").setView(
+                    [19.9975, 73.7898],
+                    10
+                );
+
+                L.tileLayer(
+                    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                    {
+                        attribution: "&copy; OpenStreetMap contributors"
+                    }
+                ).addTo(map);
+
+                map.on("click", async function (e) {
+
+                    const lat = e.latlng.lat;
+                    const lng = e.latlng.lng;
+
+                    if (marker) {
+                        marker.setLatLng(e.latlng);
+                    } else {
+                        marker = L.marker(e.latlng).addTo(map);
+                    }
+
+                    coordinates.textContent =
+                        "Latitude: " + lat.toFixed(6) +
+                        " | Longitude: " + lng.toFixed(6);
+
+                    // Save coordinates even if address lookup fails
+                    locationInput.value =
+                        "Lat: " + lat.toFixed(6) +
+                        ", Lng: " + lng.toFixed(6);
+
+                    try {
+                        const url =
+                            "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=" +
+                            lat + "&lon=" + lng;
+
+                        const response = await fetch(url);
+                        const data = await response.json();
+
+                        if (data.display_name) {
+                            locationInput.value =
+                                data.display_name +
+                                " (Lat: " + lat.toFixed(6) +
+                                ", Lng: " + lng.toFixed(6) + ")";
+                        }
+
+                    } catch (error) {
+                        console.log("Address lookup unavailable:", error);
+                    }
+                });
+            }
+
+            setTimeout(function () {
+                map.invalidateSize();
+            }, 100);
+
+        });
+
+    });
+    </script>
+
+    <!-- Plant Form Validation -->
+    <script src="{{ url_for('static', filename='plant.js') }}"></script>
+
+</body>
+</html>

@@ -1,0 +1,220 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Customer Details | Fly Ash Trading & Transport</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='customer.css') }}">
+
+    <!-- Leaflet Map CSS -->
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+
+<body>
+
+    <!-- HEADER BAR -->
+    <header class="main-header">
+
+        <div class="logo">
+            <span class="logo-circle">FA</span>
+
+            <div class="logo-text">
+                <h2>FLY ASH</h2>
+                <p>TRADING &amp; TRANSPORT</p>
+            </div>
+        </div>
+
+        <nav class="navbar">
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        </nav>
+
+    </header>
+
+
+    <!-- CUSTOMER PAGE -->
+    <main class="container">
+
+        <h1>Customer Details</h1>
+        <br><br>
+
+        <!-- CUSTOMER FORM -->
+        <form id="customerForm"
+              action="{{ url_for('customer') }}"
+              method="POST">
+
+            <label for="customerName">Customer Name</label>
+            <input type="text"
+                   id="customerName"
+                   name="customer_name"
+                   placeholder="Enter customer name"
+                   required>
+
+            <label for="companyName">Company Name</label>
+            <input type="text"
+                   id="companyName"
+                   name="company_name"
+                   placeholder="Enter company name"
+                   required>
+
+            <label for="contactNumber">Contact Number</label>
+            <input type="tel"
+                   id="contactNumber"
+                   name="contact_number"
+                   placeholder="Enter contact number"
+                   pattern="[0-9]{10}"
+                   maxlength="10"
+                   required>
+
+            <label for="email">Email</label>
+            <input type="email"
+                   id="email"
+                   name="email"
+                   placeholder="Enter email address"
+                   required>
+
+            <label for="address">Address</label>
+            <textarea id="address"
+                      name="address"
+                      placeholder="Enter customer address"
+                      required></textarea>
+
+            <label for="requirement">Fly Ash Requirement (Ton)</label>
+            <input type="number"
+                   id="requirement"
+                   name="fly_ash_requirement"
+                   placeholder="Enter requirement in ton"
+                   min="0.01"
+                   step="0.01"
+                   required>
+
+            <label for="requirementDate">Requirement Date</label>
+            <input type="date"
+                   id="requirementDate"
+                   name="requirement_date"
+                   required>
+
+            <label for="orderStatus">Order Status</label>
+            <select id="orderStatus"
+                    name="order_status"
+                    required>
+                <option value="">Select Order Status</option>
+                <option value="Pending">Pending</option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="In Process">In Process</option>
+                <option value="Completed">Completed</option>
+            </select>
+
+            <label for="deliveryLocation">Delivery Location</label>
+            <input type="text"
+                   id="deliveryLocation"
+                   name="delivery_location"
+                   placeholder="Enter delivery location"
+                   readonly
+                   required>
+
+            <button type="button" id="locationBtn">
+                📍 Use Current Location
+            </button>
+
+            <p id="selectedCoordinates"></p>
+
+            <!-- MAP -->
+            <div id="customerMap"
+                 style="height:350px; width:100%; display:none;">
+            </div>
+
+            <label for="additionalRequirement">
+                Additional Requirement
+            </label>
+
+            <textarea id="additionalRequirement"
+                      name="additional_requirement"
+                      placeholder="Enter additional requirement"></textarea>
+
+            <button type="submit">Save Customer Details</button>
+
+        </form>
+
+
+        <!-- SAVED CUSTOMER DETAILS -->
+        <section class="saved-section">
+
+            <h2>Saved Customer Details</h2>
+
+            <div id="customer-list">
+
+                {% if customers %}
+
+                    {% for c in customers %}
+
+                        <div class="saved-customer">
+
+                            <h3>{{ c[1] }}</h3>
+
+                            <p><strong>Company:</strong> {{ c[2] }}</p>
+                            <p><strong>Contact:</strong> {{ c[3] }}</p>
+                            <p><strong>Email:</strong> {{ c[4] }}</p>
+                            <p><strong>Address:</strong> {{ c[5] }}</p>
+
+                            <p>
+                                <strong>Fly Ash Requirement:</strong>
+                                {{ c[6] }} Ton
+                            </p>
+
+                            <p>
+                                <strong>Requirement Date:</strong>
+                                {{ c[7] }}
+                            </p>
+
+                            <p>
+                                <strong>Order Status:</strong>
+                                {{ c[8] }}
+                            </p>
+
+                            <p>
+                                <strong>Delivery Location:</strong>
+                                {{ c[9] }}
+                            </p>
+
+                            <p>
+                                <strong>Additional Requirement:</strong>
+                                {{ c[10] or "No additional requirement" }}
+                            </p>
+
+                        </div>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <div class="empty-message">
+                        No customer details available yet.
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="page-footer">
+        <p>&copy; 2026 Fly Ash Trading &amp; Transport Management System</p>
+    </footer>
+
+
+    <!-- JAVASCRIPT -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script src="{{ url_for('static', filename='customer.js') }}"></script>
+
+</body>
+</html>

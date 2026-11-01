@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Payment History</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='payment.css') }}">
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        <div class="logo-circle">FA</div>
+        <span>Fly Ash Transport System</span>
+    </div>
+
+    <a href="{{ url_for('dashboard') }}" class="dashboard-btn">
+        Dashboard
+    </a>
+
+</header>
+
+
+<main>
+
+    <div class="page-title">
+
+        <h1>Payment History</h1>
+
+        <p>
+            Manage customer payment and transaction information.
+        </p>
+
+    </div>
+
+
+    <!-- PAYMENT DETAILS -->
+
+    <div class="payment-card">
+
+        <h2>Payment Details</h2>
+
+        <!-- ADDED: Flask POST connection -->
+        <form id="paymentform"
+              action="{{ url_for('payment') }}"
+              method="POST">
+
+            <div class="form-group">
+
+                <label>Payment ID</label>
+
+                <input type="text"
+                       name="payment_id"
+                       placeholder="Enter payment ID"
+                       required>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Order ID</label>
+
+                <input type="text"
+                       name="order_id"
+                       placeholder="Enter order ID"
+                       required>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Customer / Industry Name</label>
+
+                <input type="text"
+                       name="customer_industry_name"
+                       placeholder="Enter customer or industry name"
+                       required>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Payment Amount</label>
+
+                <input type="number"
+                       name="payment_amount"
+                       placeholder="Enter payment amount"
+                       required>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Payment Date</label>
+
+                <input type="date"
+                       name="payment_date"
+                       required>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Payment Method</label>
+
+                <select name="payment_method" required>
+
+                    <option value="">
+                        Select Payment Method
+                    </option>
+
+                    <option>Cash</option>
+                    <option>UPI</option>
+                    <option>Bank Transfer</option>
+                    <option>Cheque</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Payment Status</label>
+
+                <select name="payment_status" required>
+
+                    <option value="">
+                        Select Payment Status
+                    </option>
+
+                    <option>Pending</option>
+                    <option>Paid</option>
+                    <option>Partially Paid</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Transaction Reference</label>
+
+                <input type="text"
+                       name="transaction_reference"
+                       placeholder="Enter transaction reference">
+
+            </div>
+
+
+            <div class="form-group full-width">
+
+                <label>Additional Details</label>
+
+                <textarea name="additional_details"
+                          placeholder="Enter additional payment details"></textarea>
+
+            </div>
+
+
+            <button type="submit">
+                Save Payment
+            </button>
+
+        </form>
+
+    </div>
+
+
+
+    <!-- PAYMENT HISTORY -->
+
+    <div class="history-card">
+
+        <h2>Payment History</h2>
+
+        <p class="history-text">
+            Payments saved in the system will appear here.
+        </p>
+
+
+        <!-- ADDED: Display saved payments from database -->
+
+        <div id="payment-list">
+
+            {% if payments %}
+
+                {% for p in payments %}
+
+                    <div class="payment-data">
+
+                        <h3>Payment ID: {{ p[0] }}</h3>
+
+                        <p>
+                            <strong>Order ID:</strong>
+                            {{ p[1] }}
+                        </p>
+
+                        <p>
+                            <strong>Customer / Industry Name:</strong>
+                            {{ p[2] }}
+                        </p>
+
+                        <p>
+                            <strong>Payment Amount:</strong>
+                            ₹{{ p[3] }}
+                        </p>
+
+                        <p>
+                            <strong>Payment Date:</strong>
+                            {{ p[4] }}
+                        </p>
+
+                        <p>
+                            <strong>Payment Method:</strong>
+                            {{ p[5] }}
+                        </p>
+
+                        <p>
+                            <strong>Payment Status:</strong>
+                            {{ p[6] }}
+                        </p>
+
+                        <p>
+                            <strong>Transaction Reference:</strong>
+                            {{ p[7] or "N/A" }}
+                        </p>
+
+                        <p>
+                            <strong>Additional Details:</strong>
+                            {{ p[8] or "N/A" }}
+                        </p>
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="empty-message">
+                    No payment history available yet.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</main>
+
+
+
+<footer>
+
+    <p>
+        © 2026 Fly Ash Trading &amp; Transport Management System
+    </p>
+
+</footer>
+
+
+<script src="{{ url_for('static', filename='payment.js') }}"></script>
+
+</body>
+</html>

@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Contact Enquiries | Fly Ash</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='c_enquiries.css') }}">
+</head>
+
+<body>
+
+    <!-- Professional Header -->
+    <header class="site-header">
+
+        <div class="brand">
+            <div class="brand-logo">FA</div>
+
+            <div class="brand-text">
+                <h2>FLY ASH</h2>
+                <p>TRADING &amp; TRANSPORT</p>
+            </div>
+        </div>
+
+        <a href="{{ url_for('dashboard') }}" class="dashboard-btn">
+            ← Dashboard
+        </a>
+
+    </header>
+
+
+    <!-- Main Content -->
+    <main>
+
+        <h1>Contact Enquiries</h1>
+
+        <p class="intro">
+            Customer enquiries received through the Contact page.
+        </p>
+
+        <!-- Enquiries from Flask and PostgreSQL -->
+        <div id="enquiries-container">
+
+            {% if enquiries %}
+
+                {% for enquiry in enquiries %}
+
+                    <div class="enquiry-card">
+
+                        <h3>{{ enquiry[1] }}</h3>
+
+                        <p>
+                            <strong>Email:</strong> {{ enquiry[2] }}
+                        </p>
+
+                        <p>
+                            <strong>Phone:</strong> {{ enquiry[3] }}
+                        </p>
+
+                        <p>
+                            <strong>Subject:</strong> {{ enquiry[4] }}
+                        </p>
+
+                        <p>
+                            <strong>Message:</strong> {{ enquiry[5] }}
+                        </p>
+
+                        <p>
+                            <small>{{ enquiry[6] }}</small>
+                        </p>
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p>No enquiries received yet.</p>
+
+            {% endif %}
+
+        </div>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 Fly Ash Trading &amp; Transport Management System</p>
+    </footer>
+
+</body>
+</html>

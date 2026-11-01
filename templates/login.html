@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>Login - Fly Ash Trading & Transport</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+
+
+</head>
+
+<body>
+
+
+<!-- HEADER -->
+
+<header class="header">
+
+    <div class="logo">
+
+        <div class="logo-circle">
+            FA
+        </div>
+
+        <div class="logo-text">
+            <h2>FLY ASH</h2>
+            <span>TRADING & TRANSPORT</span>
+        </div>
+
+    </div>
+
+    <nav>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('about') }}">About</a>
+        <a href="{{ url_for('contact') }}">Contact</a>
+    </nav>
+
+</header>
+
+
+<!-- LOGIN SECTION -->
+
+<section class="login-section">
+
+    <div class="login-box">
+
+        <div class="login-icon">
+            FA
+        </div>
+
+        <h1>Transporter Login</h1>
+
+        <p class="login-text">
+            Login to manage your fly ash transportation system
+        </p>
+
+            <form id="loginForm" action="{{ url_for('login') }}" method="POST">
+            <div class="form-group">
+
+                <label>Email</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Password</label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    required>
+
+            </div>
+
+
+            <button type="submit" class="login-button">
+                Login
+                
+            </button>
+
+        </form>
+
+
+        <p class="login-note">
+            Only authorized transporter can access the dashboard.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer class="footer">
+
+    <p>
+        © 2026 Fly Ash Trading & Transport Management System
+    </p>
+
+</footer>
+
+
+<!-- JAVASCRIPT -->
+
+<script src="{{ url_for('static', filename='login.js') }}"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,271 @@
+
+/* ========================================
+   GENERAL
+======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f3f5f9;
+    color: #252a32;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ========================================
+   PROFESSIONAL HEADER
+======================================== */
+
+.site-header {
+    width: 100%;
+    background: #20252d;
+    color: #ffffff;
+    padding: 18px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.brand-logo {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: #e5a000;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 23px;
+    font-weight: bold;
+    border: 2px solid #ffffff;
+    flex-shrink: 0;
+}
+
+.brand-text h2 {
+    font-size: 22px;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.brand-text p {
+    color: #d5d8de;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+/* Dashboard Button */
+
+.dashboard-btn {
+    background: #e5a000;
+    color: #20252d;
+    padding: 12px 20px;
+    border-radius: 7px;
+    text-decoration: none;
+    font-weight: bold;
+    white-space: nowrap;
+    transition: 0.3s;
+}
+
+.dashboard-btn:hover {
+    background: #ffc342;
+    transform: translateY(-2px);
+}
+
+/* ========================================
+   MAIN CONTENT
+======================================== */
+
+main {
+    width: 90%;
+    max-width: 1150px;
+    margin: 45px auto;
+    flex: 1;
+}
+
+main h1 {
+    text-align: center;
+    font-size: 34px;
+    color: #20252d;
+    margin-bottom: 12px;
+}
+
+.intro {
+    text-align: center;
+    color: #687080;
+    font-size: 17px;
+    line-height: 1.6;
+    margin-bottom: 35px;
+}
+
+/* ========================================
+   ENQUIRY CARDS
+======================================== */
+
+#enquiries-container {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+    align-items: stretch;
+}
+
+.enquiry-card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    border-left: 5px solid #e5a000;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+    overflow-wrap: anywhere;
+    transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.enquiry-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.11);
+}
+
+.enquiry-card h3 {
+    color: #20252d;
+    font-size: 21px;
+    margin-bottom: 18px;
+    text-transform: capitalize;
+}
+
+.enquiry-card p {
+    color: #596273;
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 12px;
+}
+
+.enquiry-card strong {
+    color: #252a32;
+}
+
+.enquiry-card small {
+    display: block;
+    color: #8a929f;
+    font-size: 12px;
+    margin-top: 15px;
+}
+
+/* Empty Enquiries Message */
+
+#enquiries-container > p {
+    grid-column: 1 / -1;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    color: #687080;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* ========================================
+   PROFESSIONAL FOOTER
+======================================== */
+
+footer {
+    width: 100%;
+    background: #20252d;
+    color: #ffffff;
+    text-align: center;
+    padding: 24px 15px;
+    border-top: 4px solid #e5a000;
+    margin-top: auto;
+}
+
+footer p {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #e1e4e9;
+}
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media (max-width: 900px) {
+    #enquiries-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    main {
+        width: 92%;
+    }
+}
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 600px) {
+    .site-header {
+        padding: 15px 4%;
+        flex-wrap: wrap;
+    }
+
+    .brand {
+        gap: 10px;
+    }
+
+    .brand-logo {
+        width: 48px;
+        height: 48px;
+        font-size: 19px;
+    }
+
+    .brand-text h2 {
+        font-size: 17px;
+    }
+
+    .brand-text p {
+        font-size: 10px;
+        letter-spacing: 1px;
+    }
+
+    .dashboard-btn {
+        padding: 10px 13px;
+        font-size: 13px;
+    }
+
+    main {
+        width: 92%;
+        margin: 30px auto;
+    }
+
+    main h1 {
+        font-size: 27px;
+    }
+
+    .intro {
+        font-size: 15px;
+        margin-bottom: 25px;
+    }
+
+    #enquiries-container {
+        grid-template-columns: 1fr;
+        gap: 17px;
+    }
+
+    .enquiry-card {
+        padding: 20px;
+    }
+
+    footer {
+        padding: 20px 12px;
+    }
+}

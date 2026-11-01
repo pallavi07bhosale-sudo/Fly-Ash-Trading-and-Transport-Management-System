@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fly Ash Trading & Transport</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <header>
+        <nav class="navbar">
+
+            <div class="logo">
+                <span>FLY ASH</span>
+                <small>Trading & Transport</small>
+            </div>
+
+            <ul class="nav-links">
+                <a href="{{ url_for('home') }}">Home</a>
+                <a href="{{ url_for('about') }}">About</a>
+                <a href="{{ url_for('contact') }}">Contact</a>
+                <a href="{{ url_for('login') }}">Login</a>
+            </ul>
+
+        </nav>
+    </header>
+
+
+    <!-- Hero Section -->
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>
+                Fly Ash Trading &<br>
+                Transport Management
+            </h1>
+
+            <p>
+                Reliable fly ash transportation from plant to customer
+                through an efficient and organized transport system.
+            </p>
+
+            <a href="{{ url_for('about') }}" class="btn">Get Started</a>
+
+        </div>
+
+    </section>
+
+
+    <!-- Introduction -->
+    <section class="intro">
+
+        <h2>Our System</h2>
+
+        <p>
+            Our system helps manage fly ash transportation,
+            customer orders, vehicles and payment records
+            in one organized platform.
+        </p>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 Fly Ash Trading & Transport Management System</p>
+    </footer>
+
+</body>
+</html>
+
